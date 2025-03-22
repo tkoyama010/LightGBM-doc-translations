@@ -37,11 +37,14 @@ jobs:
         with:
           host: github.com
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          environment-file: env.yml
+          activate-environment: docs-env
       - name: install
         run: |
-          (cd LightGBM; git fetch origin; git checkout master; git reset --hard origin/master; git branch -a)
-          pip3 install -U pip setuptools
-          pip3 install -r ./requirements.txt
           curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
           mv tx /usr/local/bin/tx
       - name: update
