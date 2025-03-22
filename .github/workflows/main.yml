@@ -37,16 +37,17 @@ jobs:
         with:
           host: github.com
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-activate-base: false
-          environment-file: env.yml
-          activate-environment: docs-env
       - name: install
         run: |
           curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash
           mv tx /usr/local/bin/tx
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          auto-update-conda: true
+          environment-file: env.yml
+          activate-environment: docs-env
       - name: update
         env:
           SPHINXINTL_TRANSIFEX_ORGANIZATION_NAME: tkoyama010
@@ -54,9 +55,7 @@ jobs:
           SPHINXINTL_TRANSIFEX_PROJECT_NAME: LightGBM-docs
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         run: |
-          conda activate docs-env
-          sh ./locale/update.sh
-          conda deactivate
+          bash ./locale/update.sh
       - name: git_config
         run: |
           git config --global user.email $GITHUB_REPOSITORY
