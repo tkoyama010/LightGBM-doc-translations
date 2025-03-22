@@ -55,6 +55,7 @@ jobs:
           SPHINXINTL_TRANSIFEX_PROJECT_NAME: LightGBM-docs
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         run: |
+          conda init
           conda activate docs-env
           source ./locale/update.sh
           conda deactivate
