@@ -55,7 +55,7 @@ jobs:
           SPHINXINTL_TRANSIFEX_PROJECT_NAME: LightGBM-docs
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         run: |
-          bash ./locale/update.sh
+          source ./locale/update.sh
       - name: git_config
         run: |
           git config --global user.email $GITHUB_REPOSITORY
