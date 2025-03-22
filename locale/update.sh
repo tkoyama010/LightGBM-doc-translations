@@ -3,19 +3,29 @@
 
 set -ex
 
-# required environment variables
 # SPHINXINTL_TRANSIFEX_ORGANIZATION_NAME=tkoyama010
 # SPHINXINTL_TRANSIFEX_PROJECT_NAME=LightGBM-docs
 # TX_TOKEN=...
-SCRIPT_DIR=$(cd $(dirname "$0") && pwd)
 
-# pull po files from transifex
-cd "$SCRIPT_DIR"
-#rm -R pot  # skip this line cause "already unused pot files will not removed" but we must keep these files to avoid commit for only "POT-Creation-Time" line updated. see: https://github.com/sphinx-doc/sphinx/issues/3443
-sphinx-build -T -D plot_gallery=0 -b gettext "$SCRIPT_DIR/../LightGBM/docs" pot
-sphinx-intl update-txconfig-resources -p pot -d .
-cat .tx/config
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+SPHINX_SOURCE_DIR="$SCRIPT_DIR/../LightGBM/docs"
+
+POT_DIR="$SCRIPT_DIR/pot"
+
+echo "Using Sphinx source directory: $SPHINX_SOURCE_DIR"
+ls -l "$SPHINX_SOURCE_DIR"
+
+sphinx-build -T -D plot_gallery=0 -b gettext "$SPHINX_SOURCE_DIR" "$POT_DIR"
+
+sphinx-intl update-txconfig-resources -p "$POT_DIR" -d "$SCRIPT_DIR"
+
+cat "$SCRIPT_DIR/.tx/config"
+
 tx push -s --skip
-rm -R -f ja
+
+rm -R -f "$SCRIPT_DIR/ja"
+
 tx pull --silent -f -l ja
-git checkout .tx/config
+
+git checkout "$SCRIPT_DIR/.tx/config"
