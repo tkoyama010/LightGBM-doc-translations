@@ -55,7 +55,9 @@ jobs:
           SPHINXINTL_TRANSIFEX_PROJECT_NAME: LightGBM-docs
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         run: |
+          conda activate docs-env
           source ./locale/update.sh
+          conda deactivate
       - name: git_config
         run: |
           git config --global user.email $GITHUB_REPOSITORY
