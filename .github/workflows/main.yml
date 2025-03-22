@@ -57,7 +57,9 @@ jobs:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
         run: |
           conda activate docs-env
-          source ./locale/update.sh
+          cd locale
+          source update.sh
+          cd ..
           conda deactivate
       - name: git_config
         run: |
