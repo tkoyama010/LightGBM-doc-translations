@@ -26,12 +26,18 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           job_name: script
-      - name: checkout with submodule
+      - name: Checkout repository with submodules
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
-          submodules: true
+          submodules: recursive
+          fetch-depth: 1
           token: ${{ secrets.PERSONAL_ACCESSTOKEN }}
+      - name: Debug path check
+        run: |
+          pwd
+          ls -l
+          ls -l LightGBM
+          ls -l LightGBM/docs
       - name: Setup SSH
         uses: MrSquaare/ssh-setup-action@v3
         with:
