@@ -31,7 +31,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
-          token: ${{ secrets.PERSONAL_ACCESSTOKEN }}
       - name: Debug path check
         run: |
           pwd
